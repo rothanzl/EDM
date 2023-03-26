@@ -16,11 +16,9 @@ void test01(){
     fakeit::When(Method(ArduinoFake(), digitalWrite)).Return();
     
 
-
     lm = new LinearActuator(
-        new LinearActuatorConstructParameter(
             new DigitalOutput(
-                new DigitalOutputParams(13))));
+                new DigitalOutputParams(13)));
 
     int result = lm->moveForMs(100);
     TEST_ASSERT_INT32_WITHIN_MESSAGE(0, 100, result, "Actuator move for ms should return 1");
@@ -59,7 +57,7 @@ void testSerial(){
 int main(int argc, char **argv) {
 
     UNITY_BEGIN();
-    // RUN_TEST(test01);
+    RUN_TEST(test01);
     RUN_TEST(testSerial);
     UNITY_END();
 

@@ -3,17 +3,13 @@
 
 #include <DigitalOutput.h>
 
-struct LinearActuatorConstructParameter{
-    LinearActuatorConstructParameter(DigitalOutput* digitalOutput){
-        DigitalOutput = digitalOutput;
-    };
 
-    DigitalOutput* DigitalOutput;
-};
 
 class LinearActuator{
+    private:
+        DigitalOutput* _digitalOutput;
     public:
-        LinearActuator(LinearActuatorConstructParameter*);
+        LinearActuator(DigitalOutput*);
         int moveForMs(int ms);
 };
 

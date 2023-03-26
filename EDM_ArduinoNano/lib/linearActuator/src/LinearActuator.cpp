@@ -1,8 +1,8 @@
 #include <LinearActuator.h>
 
 
-LinearActuator::LinearActuator(LinearActuatorConstructParameter* param){
-    
+LinearActuator::LinearActuator(DigitalOutput* digitalOutput){
+    _digitalOutput = digitalOutput;
 }
 
 int LinearActuator::moveForMs(int ms){

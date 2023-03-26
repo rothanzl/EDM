@@ -2,15 +2,16 @@
 #include <Loader.h>
 #include <DigitalOutput.h>
 
-DigitalOutput::DigitalOutput(DigitalOutputParams * params){
-    Params = params;
-    pinMode(Params->Pin, OUTPUT);
+DigitalOutput::DigitalOutput(char pin, bool reverse){
+    _pin = pin;
+    _reverse = reverse;
+    pinMode(_pin, OUTPUT);
 };
 
 void DigitalOutput::Set(){
-    digitalWrite(Params->Pin, Params->Reverse ? LOW : HIGH);
+    digitalWrite(_pin, _reverse ? LOW : HIGH);
 };
 
 void DigitalOutput::Reset(){
-    digitalWrite(Params->Pin, Params->Reverse ? HIGH : LOW);
+    digitalWrite(_pin, _reverse ? HIGH : LOW);
 };

@@ -5,12 +5,12 @@
 
 class SerialCommands{
     private:
-        Serial_ * _serial;
+        Stream * _serial;
         String _buffer;
         void (*_moveForMsCallback)(int);
         void executeSingleCommand(String commandMessage);
     public:
-        SerialCommands(Serial_ * serial){
+        SerialCommands(Stream * serial){
             _serial = serial;
             _buffer = "";
             _moveForMsCallback = nullptr;

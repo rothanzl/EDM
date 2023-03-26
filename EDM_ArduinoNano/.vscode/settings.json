@@ -1,5 +1,8 @@
 {
     "files.associations": {
-        "exception": "cpp"
+        "exception": "cpp",
+        "__locale": "cpp",
+        "istream": "cpp",
+        "ostream": "cpp"
     }
 }

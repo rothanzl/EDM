@@ -6,11 +6,17 @@
 class SerialCommands{
     private:
         Serial_ * _serial;
+        String _buffer;
+        void (*_moveForMsCallback)(int);
+        void executeSingleCommand(String commandMessage);
     public:
         SerialCommands(Serial_ * serial){
             _serial = serial;
+            _buffer = "";
+            _moveForMsCallback = nullptr;
         };
         void ReadLink();
+        void RegisterMoveForMsCallback(void (*clbk)(int)) { _moveForMsCallback = clbk; };
 };
 
 

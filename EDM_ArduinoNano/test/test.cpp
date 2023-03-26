@@ -1,5 +1,5 @@
 #include <unity.h>
-#include <ArduinoFake.h>
+#include <Loader.h>
 #include <LinearActuator.h>
 #include <SerialCommands.h>
 
@@ -16,9 +16,7 @@ void test01(){
     fakeit::When(Method(ArduinoFake(), digitalWrite)).Return();
     
 
-    lm = new LinearActuator(
-            new DigitalOutput(
-                new DigitalOutputParams(13)));
+    lm = new LinearActuator(new DigitalOutput(13));
 
     int result = lm->moveForMs(100);
     TEST_ASSERT_INT32_WITHIN_MESSAGE(0, 100, result, "Actuator move for ms should return 1");

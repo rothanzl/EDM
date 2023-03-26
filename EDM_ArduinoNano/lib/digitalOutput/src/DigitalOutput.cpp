@@ -1,11 +1,6 @@
 
+#include <Loader.h>
 #include <DigitalOutput.h>
-
-#ifdef UNIT_TEST
-    #include <ArduinoFake.h>
-#else
-    #include <Arduino.h>
-#endif
 
 DigitalOutput::DigitalOutput(DigitalOutputParams * params){
     Params = params;

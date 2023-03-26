@@ -16,7 +16,7 @@ void setup() {
 
   
   _serialCommands = new SerialCommands(&Serial);
-  _linearActuator = new LinearActuator(new DigitalOutput(13, false));
+  _linearActuator = new LinearActuator(new DigitalOutput(13));
 
   _serialCommands->RegisterMoveForMsCallback(moveForMsCallback);
 }

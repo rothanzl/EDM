@@ -7,7 +7,7 @@ class DigitalOutput{
         char _pin;
         bool _reverse;
     public:
-        DigitalOutput(char pin, bool reverse);
+        DigitalOutput(char pin, bool reverse = false);
         void Set();
         void Reset();
 };

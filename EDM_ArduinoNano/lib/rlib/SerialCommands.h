@@ -5,9 +5,9 @@
 
 class SerialCommands{
     private:
-        Stream * _serial;
+        Stream * _serial = nullptr;
         String _buffer;
-        void (*_moveForMsCallback)(int);
+        void (*_moveForMsCallback)(unsigned int, byte, byte);
         void executeSingleCommand(String commandMessage);
     public:
         SerialCommands(Stream * serial){
@@ -16,7 +16,7 @@ class SerialCommands{
             _moveForMsCallback = nullptr;
         };
         void ReadLink();
-        void RegisterMoveForMsCallback(void (*clbk)(int)) { _moveForMsCallback = clbk; };
+        void RegisterMoveForMsCallback(void (*clbk)(unsigned int, byte, byte)) { _moveForMsCallback = clbk; };
 };
 
 #endif

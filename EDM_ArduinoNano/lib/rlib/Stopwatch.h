@@ -15,7 +15,7 @@ public:
     void start();
     void stop();
     unsigned long elapsedMs();
-    unsigned long elapsedMs();
+    bool running();
 };
 
 Stopwatch::Stopwatch()
@@ -44,6 +44,10 @@ unsigned long Stopwatch::elapsedMs(){
         return _stoppedAt - _startedAt;
 
     return millis() - _startedAt;
+}
+
+bool Stopwatch::running(){
+    return _running;
 }
 
 

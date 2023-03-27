@@ -42,8 +42,8 @@ void SerialCommands::executeSingleCommand(String orderMessage){
 
       orderMessage.replace("move", "");
 
-      int ms = orderMessage.toInt();
+      unsigned int ms = orderMessage.toInt();
 
-      _moveForMsCallback(ms);
+      _moveForMsCallback(ms, 255, 1);
   }
 };

@@ -3,8 +3,8 @@
 
 class DigitalOutput{
     private:
-        char _pin;
-        bool _reverse;
+        char _pin = 0;
+        bool _reverse = 0;
     public:
         DigitalOutput(char pin, bool reverse = false);
         void Set();

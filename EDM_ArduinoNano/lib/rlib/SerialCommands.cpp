@@ -34,16 +34,31 @@ void SerialCommands::ReadLink(){
 };
 
 void SerialCommands::executeSingleCommand(String orderMessage){
-  orderMessage.replace(" ", "");
+  orderMessage.trim();
 
   if(orderMessage.indexOf("move") >= 0){
       if(_moveForMsCallback == nullptr)
         return;
 
       orderMessage.replace("move", "");
+      orderMessage.trim();
 
-      unsigned int ms = orderMessage.toInt();
+      int firstDelimIndex = orderMessage.indexOf(" ");
+      String msString = orderMessage.substring(0, firstDelimIndex);
+      msString.trim();
+      unsigned int ms = msString.toInt();
 
-      _moveForMsCallback(ms, 255, 1);
+      orderMessage = orderMessage.substring(firstDelimIndex+1);
+      orderMessage.trim();
+      int secondDelimIndex = orderMessage.indexOf(" ");
+      String valueString = orderMessage.substring(0, secondDelimIndex);
+      valueString.trim();
+      byte value = valueString.toInt();
+
+      orderMessage = orderMessage.substring(secondDelimIndex+1);
+      orderMessage.trim();
+      byte direction = orderMessage.toInt();
+
+      _moveForMsCallback(ms, value, direction);
   }
 };

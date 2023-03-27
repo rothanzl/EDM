@@ -27,13 +27,13 @@ void test01(){
 }
 
 void moveForMsCallback(unsigned int ms, byte value, byte direction){
-    TEST_MESSAGE((String("Move for ") + String(ms) + String(" ms, value ") + String(value) + String(" direction ") + String(direction)).c_str());
+    TEST_MESSAGE((String("Move for '") + String(ms) + String("' ms, value '") + String(value) + String("' direction '") + String(direction) + String("'")).c_str());
 };
 
 
 void testSerial(){
 
-    fakeit::When(Method(ArduinoFake(Serial), readString)).Return("move 200; move -1", "00; move 100 "," end");
+    fakeit::When(Method(ArduinoFake(Serial), readString)).Return("   move   200   255   1   ;    move   1", "00   200   0  ;   move   1   20   1   ","   end  ");
     fakeit::When(Method(ArduinoFake(Serial), available)).AlwaysReturn(1);
     fakeit::When(OverloadedMethod(ArduinoFake(Serial), write, size_t(const uint8_t *, size_t))).AlwaysReturn(1);
 
@@ -47,7 +47,6 @@ void testSerial(){
 
     TEST_MESSAGE("c");
 };
-
 
 
 

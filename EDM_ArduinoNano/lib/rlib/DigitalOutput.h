@@ -1,7 +1,6 @@
 #ifndef _DIGITAL_OUTPUT_H
 #define _DIGITAL_OUTPUT_H
 
-
 class DigitalOutput{
     private:
         char _pin;
@@ -11,6 +10,5 @@ class DigitalOutput{
         void Set();
         void Reset();
 };
-
 
 #endif

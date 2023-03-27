@@ -19,5 +19,4 @@ class SerialCommands{
         void RegisterMoveForMsCallback(void (*clbk)(int)) { _moveForMsCallback = clbk; };
 };
 
-
 #endif

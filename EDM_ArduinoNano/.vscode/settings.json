@@ -4,5 +4,6 @@
         "__locale": "cpp",
         "istream": "cpp",
         "ostream": "cpp"
-    }
+    },
+    "cmake.configureOnOpen": true
 }

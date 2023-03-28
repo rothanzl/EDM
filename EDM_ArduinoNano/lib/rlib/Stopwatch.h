@@ -9,45 +9,50 @@ private:
     unsigned long _startedAt;
     unsigned long _stoppedAt;
     bool _running;
+    bool _highSpeed;
+    unsigned long currentValue();
 public:
-    Stopwatch();
-    ~Stopwatch();
+    Stopwatch(bool highSpeed = false);
     void start();
     void stop();
-    unsigned long elapsedMs();
+    unsigned long elapsed();
     bool running();
 };
 
-Stopwatch::Stopwatch()
+Stopwatch::Stopwatch(bool highSpeed)
 {
     _startedAt = 0;
     _stoppedAt = 0;
     _running = false;
-}
-
-Stopwatch::~Stopwatch()
-{
+    _highSpeed = highSpeed;
 }
 
 void Stopwatch::start(){
-    _startedAt = millis();
+    _startedAt = currentValue();
     _running = true;
 }
 
 void  Stopwatch::stop(){
-    _stoppedAt = millis();
+    _stoppedAt = currentValue();
     _running = false;
 }
 
-unsigned long Stopwatch::elapsedMs(){
+unsigned long Stopwatch::elapsed(){
     if(!_running)
         return _stoppedAt - _startedAt;
 
-    return millis() - _startedAt;
+    return currentValue() - _startedAt;
 }
 
 bool Stopwatch::running(){
     return _running;
+}
+
+unsigned long Stopwatch::currentValue(){
+    if(_highSpeed)
+        return micros();
+    
+    return millis();
 }
 
 

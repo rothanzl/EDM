@@ -54,7 +54,7 @@ void LinearActuator::ping(){
     if(!_stopwatch->running())
         return;
 
-    if(_stopwatch->elapsedMs() < _duration)
+    if(_stopwatch->elapsed() < _duration)
         return;
 
     _stopwatch->stop();

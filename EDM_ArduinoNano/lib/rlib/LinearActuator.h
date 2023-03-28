@@ -17,6 +17,7 @@ class LinearActuator{
         int moveForMs(unsigned int ms, byte value, bool direction);
         int move(byte value, bool direction);
         void ping();
+        bool isRunningAutomated();
 };
 
 
@@ -61,6 +62,10 @@ void LinearActuator::ping(){
 
     _outputA->set(0);
     _outputB->set(0);
+}
+
+bool LinearActuator::isRunningAutomated(){
+    return _stopwatch->running();
 }
 
 #endif

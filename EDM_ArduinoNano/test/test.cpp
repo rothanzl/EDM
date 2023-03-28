@@ -2,6 +2,7 @@
 #include <Loader.h>
 #include <LinearActuator.h>
 #include <SerialCommands.h>
+#include <AnalogInput.h>
 
 
 LinearActuator *lm = nullptr;
@@ -48,6 +49,24 @@ void testSerial(){
     TEST_MESSAGE("c");
 };
 
+void testAnalogRead(){
+    AnalogInput * analogInput = new AnalogInput(A0);
+
+    fakeit::When(Method(ArduinoFake(), analogRead)).Return(0.);
+    float v = analogInput->readVoltage();
+    TEST_ASSERT_FLOAT_WITHIN(0., 0, v);
+    
+    fakeit::When(Method(ArduinoFake(), analogRead)).Return(1023);
+    v = analogInput->readVoltage();
+    TEST_ASSERT_FLOAT_WITHIN(0., 5.0, v);
+
+    fakeit::When(Method(ArduinoFake(), analogRead)).Return(511);
+    v = analogInput->readVoltage();
+    TEST_ASSERT_FLOAT_WITHIN(0.01, 2.5, v);
+    
+
+}
+
 
 
 int main(int argc, char **argv) {
@@ -55,6 +74,7 @@ int main(int argc, char **argv) {
     UNITY_BEGIN();
     RUN_TEST(test01);
     RUN_TEST(testSerial);
+    RUN_TEST(testAnalogRead);
     UNITY_END();
 
     return 0;

@@ -3,7 +3,11 @@
         "exception": "cpp",
         "__locale": "cpp",
         "istream": "cpp",
-        "ostream": "cpp"
+        "ostream": "cpp",
+        "new": "cpp",
+        "__string": "cpp",
+        "string": "cpp",
+        "string_view": "cpp"
     },
     "cmake.configureOnOpen": true
 }

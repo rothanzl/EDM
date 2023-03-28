@@ -3,6 +3,7 @@
 #include <LinearActuator.h>
 #include <SerialCommands.h>
 #include <AnalogInput.h>
+#include <RepeatLogger.h>
 
 
 LinearActuator *lm = nullptr;
@@ -63,11 +64,17 @@ void testAnalogRead(){
     fakeit::When(Method(ArduinoFake(), analogRead)).Return(511);
     v = analogInput->readVoltage();
     TEST_ASSERT_FLOAT_WITHIN(0.01, 2.5, v);
-    
 
 }
 
+void testRepeatLogger(){
 
+    RepeatLoggerValue * values[] = { new RepeatLoggerValue(), new RepeatLoggerValue() };
+    RepeatLogger * repeatLogger = new RepeatLogger(&Serial, 1000, values);
+
+    
+    TEST_MESSAGE( (String("Length ") + String(sizeof(values) / sizeof(RepeatLoggerValue*))).c_str() );
+}
 
 int main(int argc, char **argv) {
 
@@ -75,6 +82,7 @@ int main(int argc, char **argv) {
     RUN_TEST(test01);
     RUN_TEST(testSerial);
     RUN_TEST(testAnalogRead);
+    RUN_TEST(testRepeatLogger);
     UNITY_END();
 
     return 0;

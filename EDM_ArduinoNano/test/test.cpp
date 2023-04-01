@@ -69,11 +69,23 @@ void testAnalogRead(){
 
 void testRepeatLogger(){
 
-    RepeatLoggerValue * values[] = { new RepeatLoggerValue(), new RepeatLoggerValue() };
-    RepeatLogger * repeatLogger = new RepeatLogger(&Serial, 1000, values);
+    LogRepeatLastString* logString = new LogRepeatLastString();
+    RepeatLoggerValue* values[] = { new RepeatLoggerValue(), new RepeatLoggerValue(), logString};
+    int count = sizeof(values) / sizeof(RepeatLoggerValue*);
+    RepeatLogger * repeatLogger = new RepeatLogger(&Serial, 1000, count, values);
 
-    
     TEST_MESSAGE( (String("Length ") + String(sizeof(values) / sizeof(RepeatLoggerValue*))).c_str() );
+
+
+    fakeit::When(OverloadedMethod(ArduinoFake(Serial), write, size_t(const uint8_t *, size_t))).AlwaysReturn(1);
+    repeatLogger->TryPrint();
+
+    TEST_ASSERT_EQUAL_STRING("", values[0]->getMessage().c_str());
+    TEST_ASSERT_EQUAL_STRING("", values[1]->getMessage().c_str());
+
+    logString->set("this is test message!");
+    TEST_ASSERT_EQUAL_STRING("this is test message!", values[2]->getMessage().c_str());
+
 }
 
 int main(int argc, char **argv) {

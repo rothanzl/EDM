@@ -28,10 +28,6 @@ void test01(){
     delete lm;
 }
 
-void moveForMsCallback(unsigned int ms, byte value, byte direction){
-    TEST_MESSAGE((String("Move for '") + String(ms) + String("' ms, value '") + String(value) + String("' direction '") + String(direction) + String("'")).c_str());
-};
-
 
 void testSerial(){
 
@@ -41,8 +37,9 @@ void testSerial(){
 
     TEST_MESSAGE("a");
 
-    SerialCommands * serialCommands = new SerialCommands(&Serial);
-    serialCommands->RegisterMoveForMsCallback(moveForMsCallback);
+    SerialCommands * serialCommands = new SerialCommands(&Serial, new OrderHandler(), 
+        new LinearActuator(new AnalogOutput(A0), new AnalogOutput(A1)));
+    
     serialCommands->ReadLink();
     serialCommands->ReadLink();
     serialCommands->ReadLink();

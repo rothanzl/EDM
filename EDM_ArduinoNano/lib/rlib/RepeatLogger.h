@@ -3,16 +3,13 @@
 
 #include <Loader.h>
 #include <Stopwatch.h>
+#include <MemoryFree.h>
 
 class RepeatLoggerValue{
     private:
     public:
-        virtual String getMessage();
+        virtual String getMessage() = 0;
 };
-
-String RepeatLoggerValue::getMessage(){
-    return String("");
-}
 
 class LogRepeatLastString : public RepeatLoggerValue{
     private:
@@ -22,7 +19,7 @@ class LogRepeatLastString : public RepeatLoggerValue{
             _value = value;
         }
         String getMessage(){
-            return _value;
+            return _value.c_str();
         }
 };
 
@@ -34,12 +31,12 @@ class RepeatLogger{
         Stopwatch* _stopwatch;
         RepeatLoggerValue** _values;
     public:
-        RepeatLogger(Stream * serial, unsigned int periodMs, int count, RepeatLoggerValue* values[]);
+        RepeatLogger(Stream * serial, unsigned int periodMs, int count, RepeatLoggerValue** values);
         void TryPrint();
 };
 
 
-RepeatLogger::RepeatLogger(Stream * serial, unsigned int periodMs, int count, RepeatLoggerValue* values[]){
+RepeatLogger::RepeatLogger(Stream * serial, unsigned int periodMs, int count, RepeatLoggerValue** values){
     _valuesCount = count;
     _serial = serial;
     _periodMs = periodMs;
@@ -57,12 +54,13 @@ void RepeatLogger::TryPrint(){
     _stopwatch->stop();
     _stopwatch->start();
 
-    unsigned long time = millis();
+    float time = (float)millis() / 1000;
 
     for(int i = 0; i < _valuesCount; i++){
         RepeatLoggerValue* logger = _values[i];
         String message = logger->getMessage();
-        _serial->write((String(time) + String(" ")  + message + String("\n") ).c_str() );
+        
+        _serial->write((String(time) + String(" ") + String(freeMemory()) + String(" ")  + String(message) + String("\n") ).c_str() );
     }
 }
 

@@ -16,12 +16,12 @@
 
 
 
-// SerialCommands* _serialCommands;
-// LinearActuator* _linearActuator;
-// AnalogInput* _analogInput;
-// OrderHandler* _orderHandler;
+SerialCommands* _serialCommands;
+LinearActuator* _linearActuator;
+AnalogInput* _analogInput;
+OrderHandler* _orderHandler;
 RepeatLogger* _repeatLogger;
-LogRepeatLastString* _repeatLoggerLastString;
+LogRepeatMinMax* _voltageLogger;
 
 float _voltageValue;
 
@@ -40,14 +40,16 @@ void setup() {
   Serial.begin(9600);
   while (!Serial) { }
 
-  // _orderHandler = new OrderHandler();
-  // _linearActuator = new LinearActuator(new AnalogOutput(MOTOR_PIN_A), new AnalogOutput(MOTOR_PIN_B));
-  // _serialCommands = new SerialCommands(&Serial, _orderHandler, _linearActuator);
-  // _analogInput = new AnalogInput(ANALOG_READ_PIN);
+  _orderHandler = new OrderHandler();
+  _linearActuator = new LinearActuator(new AnalogOutput(MOTOR_PIN_A), new AnalogOutput(MOTOR_PIN_B));
+  _serialCommands = new SerialCommands(&Serial, _orderHandler, _linearActuator);
+  _analogInput = new AnalogInput(ANALOG_READ_PIN);
 
-  _repeatLoggerLastString = new LogRepeatLastString();
-  _repeatLoggerLastString->set("Ahoj!");
-  _repeatLogger = new RepeatLogger(&Serial, 1000, 1, new RepeatLoggerValue* { _repeatLoggerLastString } );
+  
+  _voltageLogger = new LogRepeatMinMax("Analog ", " V");
+  RepeatLoggerValue** array = new RepeatLoggerValue*[1];
+  array[0] = _voltageLogger;
+  _repeatLogger = new RepeatLogger(&Serial, 3000, 1,  array);
 
   _voltageValue = 0;
 }
@@ -56,7 +58,8 @@ void loop() {
   // _serialCommands->ReadLink();
   // _linearActuator->ping();
   // _orderHandler->Handle();
-  // _voltageValue = _analogInput->readVoltage();
+  _voltageValue = _analogInput->readVoltage();
+  _voltageLogger->set(_voltageValue);
 
   _repeatLogger->TryPrint();
 

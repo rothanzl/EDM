@@ -14,14 +14,48 @@ class RepeatLoggerValue{
 class LogRepeatLastString : public RepeatLoggerValue{
     private:
         String _value;
+        const char* _prefix; 
+        const char* _postfix;
     public:
+        LogRepeatLastString(const char* prefix, const char* postfix){
+            _prefix = prefix;
+            _postfix = postfix;
+        };
         void set(String value){
-            _value = value;
+            _value = _prefix + value + _postfix;
         }
         String getMessage(){
             return _value.c_str();
         }
 };
+
+class LogRepeatMinMax : public RepeatLoggerValue{
+    private:
+        double _min = __DEC64_MAX__;
+        double _max = -__DEC64_MIN__;
+        const char* _prefix; 
+        const char* _postfix;
+    public:
+        LogRepeatMinMax(const char* prefix, const char* postfix){
+            _prefix = prefix;
+            _postfix = postfix;
+        };
+        void set(double value){
+            if(_min > value)
+                _min = value;
+
+            if(_max < value)
+                _max = value;
+        }
+        String getMessage(){
+            String result = (_prefix + String(_min) + String(" - ") + String(_max) + _postfix);
+            _min = __DEC64_MAX__;
+            _max = -__DEC64_MIN__;
+            return result;
+        }
+};
+
+
 
 class RepeatLogger{
     private:
@@ -56,12 +90,14 @@ void RepeatLogger::TryPrint(){
 
     float time = (float)millis() / 1000;
 
+    String toWrite = String(time) + String(" ") + String(freeMemory()) + String("; ");
     for(int i = 0; i < _valuesCount; i++){
         RepeatLoggerValue* logger = _values[i];
-        String message = logger->getMessage();
         
-        _serial->write((String(time) + String(" ") + String(freeMemory()) + String(" ")  + String(message) + String("\n") ).c_str() );
+        toWrite += logger->getMessage() + "; ";
     }
+    toWrite += "\n";
+    _serial->write(toWrite.c_str());
 }
 
 

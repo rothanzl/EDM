@@ -5,8 +5,8 @@
 #include <OrderHandler.h>
 #include <RepeatLogger.h>
 
-#define MOTOR_PIN_A 12
-#define MOTOR_PIN_B 13
+#define MOTOR_PIN_A 9
+#define MOTOR_PIN_B 10
 #define ANALOG_READ_PIN PIN_A0
 
 #define JUSTIFI_UPPER_VALUE 4.0
@@ -37,13 +37,20 @@ float _voltageValue;
 // }
 
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(9600, SERIAL_8N1);
   while (!Serial) { }
 
   _orderHandler = new OrderHandler();
   _linearActuator = new LinearActuator(new AnalogOutput(MOTOR_PIN_A), new AnalogOutput(MOTOR_PIN_B));
   _serialCommands = new SerialCommands(&Serial, _orderHandler, _linearActuator);
   _analogInput = new AnalogInput(ANALOG_READ_PIN);
+
+
+  // pinMode(MOTOR_PIN_A, OUTPUT);
+  // pinMode(MOTOR_PIN_B, OUTPUT);
+
+  // digitalWrite(MOTOR_PIN_B, HIGH);
+  // digitalWrite(MOTOR_PIN_A, HIGH);
 
   
   _voltageLogger = new LogRepeatMinMax("Analog ", " V");
@@ -54,6 +61,7 @@ void setup() {
   _voltageValue = 0;
 }
 
+bool dir;
 void loop() {
   // _serialCommands->ReadLink();
   // _linearActuator->ping();
@@ -61,7 +69,16 @@ void loop() {
   _voltageValue = _analogInput->readVoltage();
   _voltageLogger->set(_voltageValue);
 
+
+  _linearActuator->ping();
+  if(!_linearActuator->isRunningAutomated()){
+    delay(200);
+    _linearActuator->moveForMs(50, 50, dir);
+    //dir = !dir;
+  }
+
   _repeatLogger->TryPrint();
+
 
   // if(!_linearActuator->isRunningAutomated())
   //   justification();

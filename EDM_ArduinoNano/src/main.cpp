@@ -8,6 +8,7 @@
 #define MOTOR_PIN_A 9
 #define MOTOR_PIN_B 10
 #define ANALOG_READ_PIN PIN_A0
+#define POWER_SWITCH_PIN 3
 
 #define JUSTIFI_UPPER_VALUE 4.0
 #define JUSTIFI_LOWER_VALUE 3.0
@@ -36,6 +37,9 @@ float _voltageValue;
 //   }
 // }
 
+
+void setupPowerSwitch();
+
 void setup() {
   Serial.begin(9600, SERIAL_8N1);
   while (!Serial) { }
@@ -45,20 +49,13 @@ void setup() {
   _serialCommands = new SerialCommands(&Serial, _orderHandler, _linearActuator);
   _analogInput = new AnalogInput(ANALOG_READ_PIN);
 
-
-  // pinMode(MOTOR_PIN_A, OUTPUT);
-  // pinMode(MOTOR_PIN_B, OUTPUT);
-
-  // digitalWrite(MOTOR_PIN_B, HIGH);
-  // digitalWrite(MOTOR_PIN_A, HIGH);
-
   
   _voltageLogger = new LogRepeatMinMax("Analog ", " V");
-  RepeatLoggerValue** array = new RepeatLoggerValue*[1];
-  array[0] = _voltageLogger;
-  _repeatLogger = new RepeatLogger(&Serial, 3000, 1,  array);
+  _repeatLogger = new RepeatLogger(&Serial, 2000, 1,  new RepeatLoggerValue* [1] { _voltageLogger });
 
   _voltageValue = 0;
+
+  setupPowerSwitch();
 }
 
 bool dir;
@@ -71,15 +68,13 @@ void loop() {
 
 
   _linearActuator->ping();
-  if(!_linearActuator->isRunningAutomated()){
-    delay(200);
-    _linearActuator->moveForMs(50, 50, dir);
-    //dir = !dir;
-  }
 
   _repeatLogger->TryPrint();
+}
 
-
-  // if(!_linearActuator->isRunningAutomated())
-  //   justification();
+void setupPowerSwitch(){
+  pinMode(POWER_SWITCH_PIN, OUTPUT);
+  TCCR2A = _BV(COM2B1) | _BV(WGM21) | _BV(WGM20);
+  TCCR2B = _BV(CS20) | _BV(CS21);
+  OCR2B = 51;
 }

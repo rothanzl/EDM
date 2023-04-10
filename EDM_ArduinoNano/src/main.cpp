@@ -49,6 +49,7 @@ void setup() {
   _serialCommands = new SerialCommands(&Serial, _orderHandler, _linearActuator);
   _analogInput = new AnalogInput(ANALOG_READ_PIN);
 
+  //_linearActuator->moveForMs(10000, 255, true);
   
   _voltageLogger = new LogRepeatMinMax("Analog ", " V");
   _repeatLogger = new RepeatLogger(&Serial, 2000, 1,  new RepeatLoggerValue* [1] { _voltageLogger });
@@ -60,9 +61,9 @@ void setup() {
 
 bool dir;
 void loop() {
-  // _serialCommands->ReadLink();
-  // _linearActuator->ping();
-  // _orderHandler->Handle();
+  _serialCommands->ReadLink();
+  _linearActuator->ping();
+  _orderHandler->Handle();
   _voltageValue = _analogInput->readVoltage();
   _voltageLogger->set(_voltageValue);
 

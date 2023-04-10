@@ -11,31 +11,63 @@ class SerialCommands{
         OrderHandler* _orderHandler;
         LinearActuator* _linearActuator;
 
+        const char** splitMessage(const char* message, char deliminer, byte count){
+            const char* result[count];
+
+            String m = String(message);
+            m.trim();
+            
+            for(byte i = 0; i < count; i++){
+                int firstDelimIndex = m.indexOf(deliminer);
+                String substring = m.substring(0, firstDelimIndex);
+                substring.trim();
+                result[i] = substring.c_str();
+                m = m.substring(firstDelimIndex+1);
+            }
+
+            return result;
+        };
+
         void executeSingleCommand(String orderMessage){
             orderMessage.trim();
 
+
+            _serial->println((String("single command: ") + orderMessage).c_str());
+
             if(orderMessage.indexOf("move") >= 0){
+                _serial->println((String("move: ") + orderMessage).c_str());
+
                 orderMessage.replace("move", "");
                 orderMessage.trim();
 
-                int firstDelimIndex = orderMessage.indexOf(" ");
-                String msString = orderMessage.substring(0, firstDelimIndex);
-                msString.trim();
-                unsigned int ms = msString.toInt();
+                const char** splittedMessage = splitMessage(orderMessage.c_str(), ' ', 3);
 
-                orderMessage = orderMessage.substring(firstDelimIndex+1);
-                orderMessage.trim();
-                int secondDelimIndex = orderMessage.indexOf(" ");
-                String valueString = orderMessage.substring(0, secondDelimIndex);
-                valueString.trim();
-                byte value = valueString.toInt();
+                _serial->println(String(String(splittedMessage[0]).toInt()));
 
-                orderMessage = orderMessage.substring(secondDelimIndex+1);
-                orderMessage.trim();
-                byte direction = orderMessage.toInt();
+                // _orderHandler->Register(new LinearActuatorOrder(
+                //     _linearActuator, 
+                //     String(splittedMessage[0]).toInt(), 
+                //     String(splittedMessage[1]).toInt(), 
+                //     (bool) String(splittedMessage[2]).toInt()));
+
+                // int firstDelimIndex = orderMessage.indexOf(" ");
+                // String msString = orderMessage.substring(0, firstDelimIndex);
+                // msString.trim();
+                // unsigned int ms = msString.toInt();
+
+                // orderMessage = orderMessage.substring(firstDelimIndex+1);
+                // orderMessage.trim();
+                // int secondDelimIndex = orderMessage.indexOf(" ");
+                // String valueString = orderMessage.substring(0, secondDelimIndex);
+                // valueString.trim();
+                // byte value = valueString.toInt();
+
+                // orderMessage = orderMessage.substring(secondDelimIndex+1);
+                // orderMessage.trim();
+                // byte direction = orderMessage.toInt();
 
                 
-                _orderHandler->Register(new LinearActuatorOrder(_linearActuator, ms, value, (bool) direction));
+                // _orderHandler->Register(new LinearActuatorOrder(_linearActuator, ms, value, (bool) direction));
             }
         };
 
@@ -54,14 +86,11 @@ class SerialCommands{
                 return;
 
             String line = _serial->readString();
-            _serial->write(line.c_str());
-
             _buffer += line;
 
             int endIndex = _buffer.indexOf("end");
             if(endIndex == -1)
                 return;
-
 
             String substring = _buffer.substring(0, endIndex);
             int deliminerIndex = substring.indexOf(";");

@@ -31,7 +31,7 @@ void test01(){
 
 void testSerial(){
 
-    fakeit::When(Method(ArduinoFake(Serial), readString)).Return("   move   200   255   1   ;    move   1", "00   200   0  ;   move   1   20   1   ","   end  ");
+    fakeit::When(Method(ArduinoFake(Serial), readString)).Return("   move   1000   255   1 end  ;    move   1", "00   200   0  ;   move   1   20   1   ","   end  ");
     fakeit::When(Method(ArduinoFake(Serial), available)).AlwaysReturn(1);
     fakeit::When(OverloadedMethod(ArduinoFake(Serial), write, size_t(const uint8_t *, size_t))).AlwaysReturn(1);
 

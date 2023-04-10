@@ -40,9 +40,8 @@ class SerialCommands{
                 orderMessage.replace("move", "");
                 orderMessage.trim();
 
-                const char** splittedMessage = splitMessage(orderMessage.c_str(), ' ', 3);
-
-                _serial->println(String(String(splittedMessage[0]).toInt()));
+                // const char** splittedMessage = splitMessage(orderMessage.c_str(), ' ', 3);
+                // _serial->println(String(String(splittedMessage[0]).toInt()));
 
                 // _orderHandler->Register(new LinearActuatorOrder(
                 //     _linearActuator, 
@@ -50,24 +49,24 @@ class SerialCommands{
                 //     String(splittedMessage[1]).toInt(), 
                 //     (bool) String(splittedMessage[2]).toInt()));
 
-                // int firstDelimIndex = orderMessage.indexOf(" ");
-                // String msString = orderMessage.substring(0, firstDelimIndex);
-                // msString.trim();
-                // unsigned int ms = msString.toInt();
+                int firstDelimIndex = orderMessage.indexOf(" ");
+                String msString = orderMessage.substring(0, firstDelimIndex);
+                msString.trim();
+                unsigned int ms = msString.toInt();
 
-                // orderMessage = orderMessage.substring(firstDelimIndex+1);
-                // orderMessage.trim();
-                // int secondDelimIndex = orderMessage.indexOf(" ");
-                // String valueString = orderMessage.substring(0, secondDelimIndex);
-                // valueString.trim();
-                // byte value = valueString.toInt();
+                orderMessage = orderMessage.substring(firstDelimIndex+1);
+                orderMessage.trim();
+                int secondDelimIndex = orderMessage.indexOf(" ");
+                String valueString = orderMessage.substring(0, secondDelimIndex);
+                valueString.trim();
+                byte value = valueString.toInt();
 
-                // orderMessage = orderMessage.substring(secondDelimIndex+1);
-                // orderMessage.trim();
-                // byte direction = orderMessage.toInt();
+                orderMessage = orderMessage.substring(secondDelimIndex+1);
+                orderMessage.trim();
+                byte direction = orderMessage.toInt();
 
                 
-                // _orderHandler->Register(new LinearActuatorOrder(_linearActuator, ms, value, (bool) direction));
+                _orderHandler->Register(new LinearActuatorOrder(_linearActuator, ms, value, (bool) direction));
             }
         };
 

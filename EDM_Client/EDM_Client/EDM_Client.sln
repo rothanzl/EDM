@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EDM_Client", "EDM_Client\EDM_Client.csproj", "{A6B8A0F7-B591-4852-9960-163041159C8F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EDM_Client_Console", "EDM_Client_Console\EDM_Client_Console.csproj", "{DACE3031-6CC3-4209-AA1C-1A890890BDED}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A6B8A0F7-B591-4852-9960-163041159C8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6B8A0F7-B591-4852-9960-163041159C8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6B8A0F7-B591-4852-9960-163041159C8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6B8A0F7-B591-4852-9960-163041159C8F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DACE3031-6CC3-4209-AA1C-1A890890BDED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DACE3031-6CC3-4209-AA1C-1A890890BDED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DACE3031-6CC3-4209-AA1C-1A890890BDED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DACE3031-6CC3-4209-AA1C-1A890890BDED}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

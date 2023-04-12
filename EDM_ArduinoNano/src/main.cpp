@@ -40,8 +40,10 @@ float _voltageValue;
 
 void setupPowerSwitch();
 
+
+
 void setup() {
-  Serial.begin(9600, SERIAL_8N1);
+  Serial.begin(9600, SERIAL_8O2);
   while (!Serial) { }
 
   _orderHandler = new OrderHandler();
@@ -59,8 +61,9 @@ void setup() {
   setupPowerSwitch();
 }
 
-bool dir;
+
 void loop() {
+
   _serialCommands->ReadLink();
   _linearActuator->ping();
   _orderHandler->Handle();
@@ -71,6 +74,8 @@ void loop() {
   _linearActuator->ping();
 
   _repeatLogger->TryPrint();
+
+
 }
 
 void setupPowerSwitch(){

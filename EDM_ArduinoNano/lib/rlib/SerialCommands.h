@@ -11,7 +11,7 @@ class SerialCommands{
         OrderHandler* _orderHandler;
         LinearActuator* _linearActuator;
 
-        const char** splitMessage(const char* message, char deliminer, byte count){
+        char** splitMessage(const char* message, char deliminer, byte count){
             const char* result[count];
 
             String m = String(message);
@@ -33,6 +33,9 @@ class SerialCommands{
 
 
             _serial->println((String("single command: ") + orderMessage).c_str());
+            _serial->flush();
+            _serial->println((String("move index: ") + String(orderMessage.indexOf("move"))).c_str());
+            _serial->flush();
 
             if(orderMessage.indexOf("move") >= 0){
                 _serial->println((String("move: ") + orderMessage).c_str());
@@ -40,14 +43,20 @@ class SerialCommands{
                 orderMessage.replace("move", "");
                 orderMessage.trim();
 
-                // const char** splittedMessage = splitMessage(orderMessage.c_str(), ' ', 3);
-                // _serial->println(String(String(splittedMessage[0]).toInt()));
+                //const char** splittedMessage = splitMessage(orderMessage.c_str(), ' ', 3);
+
+                //_serial->println((String(splittedMessage[0])).c_str());
+
+
+                //_serial->println(String(String(splittedMessage[0]).toInt()));
 
                 // _orderHandler->Register(new LinearActuatorOrder(
                 //     _linearActuator, 
                 //     String(splittedMessage[0]).toInt(), 
                 //     String(splittedMessage[1]).toInt(), 
                 //     (bool) String(splittedMessage[2]).toInt()));
+
+                return;
 
                 int firstDelimIndex = orderMessage.indexOf(" ");
                 String msString = orderMessage.substring(0, firstDelimIndex);

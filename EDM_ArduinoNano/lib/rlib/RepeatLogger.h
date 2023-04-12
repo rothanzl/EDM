@@ -4,6 +4,7 @@
 #include <Loader.h>
 #include <Stopwatch.h>
 #include <MemoryFree.h>
+#include <CRC32.h>
 
 class RepeatLoggerValue{
     private:
@@ -96,8 +97,36 @@ void RepeatLogger::TryPrint(){
         
         toWrite += logger->getMessage() + "; ";
     }
-    toWrite += "\n";
-    _serial->write(toWrite.c_str());
+    
+    const char* wholeMessage = toWrite.c_str();
+    uint32_t checksum = CRC32::calculate(wholeMessage, strlen(wholeMessage));
+
+    uint8_t checksumBytes[4];
+    checksumBytes[0] = (checksum >> 0)  & 0xFF;
+    checksumBytes[1] = (checksum >> 8)  & 0xFF;
+    checksumBytes[2] = (checksum >> 16) & 0xFF;
+    checksumBytes[3] = (checksum >> 24) & 0xFF;
+  
+    _serial->write( wholeMessage );
+    char byteString[2];
+    _serial->write(";crc");
+
+    sprintf(byteString, "%x", checksumBytes[0]);
+    _serial->write(byteString);
+    _serial->write(" ");
+
+    sprintf(byteString, "%x", checksumBytes[1]);
+    _serial->write(byteString);
+    _serial->write(" ");
+
+    sprintf(byteString, "%x", checksumBytes[2]);
+    _serial->write(byteString);
+    _serial->write(" ");
+
+    sprintf(byteString, "%x", checksumBytes[3]);
+    _serial->write(byteString);
+    _serial->write("\n");
+
 }
 
 

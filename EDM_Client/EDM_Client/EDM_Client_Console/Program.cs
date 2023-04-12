@@ -31,10 +31,10 @@ while (console.ReadLine() is {} command)
 
     if (command.Equals("l"))
     {
-        edmInterface.Send(new MoveCommand(1000, MoveCommandDirection.Left));
+        edmInterface.Send(new MoveCommand(10000, MoveCommandDirection.Left));
     }else if (command.Equals("r"))
     {
-        edmInterface.Send(new MoveCommand(1000, MoveCommandDirection.Right));
+        edmInterface.Send(new MoveCommand(10000, MoveCommandDirection.Right));
     }else if (command.Equals("end"))
     {
         break;

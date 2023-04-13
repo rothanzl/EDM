@@ -49,7 +49,7 @@ class LogRepeatMinMax : public RepeatLoggerValue{
                 _max = value;
         }
         String getMessage(){
-            String result = (_prefix + String(_min) + String(" - ") + String(_max) + _postfix);
+            String result = _prefix + String(_min, 4) + String(" - ") + String(_max, 4) + String(" (") + String(_max - _min, 4) + String(")") + _postfix;
             _min = __DEC64_MAX__;
             _max = -__DEC64_MIN__;
             return result;

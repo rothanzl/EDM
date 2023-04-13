@@ -23,21 +23,6 @@ public class EdmInterface : IEdmInterface
         _port.Parity = Parity.Odd;
         _port.StopBits = StopBits.Two;
 
-        _port.ErrorReceived += (sender, args) =>
-        {
-
-        };
-
-        _port.PinChanged += (sender, args) =>
-        {
-
-        };
-
-        _port.DataReceived += (sender, args) =>
-        {
-
-        };
-
         _readThread = new Thread(Read);
     }
 

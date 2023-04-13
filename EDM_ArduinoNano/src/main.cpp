@@ -51,10 +51,9 @@ void setup() {
   _serialCommands = new SerialCommands(&Serial, _orderHandler, _linearActuator);
   _analogInput = new AnalogInput(ANALOG_READ_PIN);
 
-  //_linearActuator->moveForMs(10000, 255, true);
   
   _voltageLogger = new LogRepeatMinMax("Analog ", " V");
-  _repeatLogger = new RepeatLogger(&Serial, 2000, 1,  new RepeatLoggerValue* [1] { _voltageLogger });
+  _repeatLogger = new RepeatLogger(&Serial, 250, 1,  new RepeatLoggerValue* [1] { _voltageLogger });
 
   _voltageValue = 0;
 

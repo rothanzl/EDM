@@ -4,4 +4,5 @@ public interface IConsoleInterface
 {
     void WriteLine(string line);
     string ReadLine();
+    ConsoleKeyInfo ReadKey();
 }

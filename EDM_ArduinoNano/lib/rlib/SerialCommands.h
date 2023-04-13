@@ -3,6 +3,7 @@
 
 #include <Loader.h>
 #include <OrderHandler.h>
+#include <Automation.h>
 
 class SerialCommands{
     private:
@@ -10,23 +11,9 @@ class SerialCommands{
         String _buffer;
         OrderHandler* _orderHandler;
         LinearActuator* _linearActuator;
+        Automation* _automation;
 
-        char** splitMessage(const char* message, char deliminer, byte count){
-            const char* result[count];
-
-            String m = String(message);
-            m.trim();
-            
-            for(byte i = 0; i < count; i++){
-                int firstDelimIndex = m.indexOf(deliminer);
-                String substring = m.substring(0, firstDelimIndex);
-                substring.trim();
-                result[i] = substring.c_str();
-                m = m.substring(firstDelimIndex+1);
-            }
-
-            return result;
-        };
+        
 
         void executeSingleCommand(String orderMessage){
             orderMessage.trim();
@@ -42,21 +29,6 @@ class SerialCommands{
 
                 orderMessage.replace("move", "");
                 orderMessage.trim();
-
-                //const char** splittedMessage = splitMessage(orderMessage.c_str(), ' ', 3);
-
-                //_serial->println((String(splittedMessage[0])).c_str());
-
-
-                //_serial->println(String(String(splittedMessage[0]).toInt()));
-
-                // _orderHandler->Register(new LinearActuatorOrder(
-                //     _linearActuator, 
-                //     String(splittedMessage[0]).toInt(), 
-                //     String(splittedMessage[1]).toInt(), 
-                //     (bool) String(splittedMessage[2]).toInt()));
-
-                return;
 
                 int firstDelimIndex = orderMessage.indexOf(" ");
                 String msString = orderMessage.substring(0, firstDelimIndex);
@@ -76,15 +48,21 @@ class SerialCommands{
 
                 
                 _orderHandler->Register(new LinearActuatorOrder(_linearActuator, ms, value, (bool) direction));
+            }else if(orderMessage.indexOf("auto start") >= 0){
+                _automation->Start();
+            }else if(orderMessage.indexOf("auto stop") >= 0){
+                _automation->Stop();
             }
+
         };
 
     public:
-        SerialCommands(Stream * serial, OrderHandler* orderHandler, LinearActuator* linearActuator){
+        SerialCommands(Stream * serial, OrderHandler* orderHandler, LinearActuator* linearActuator, Automation* automation){
             _serial = serial;
             _buffer = "";
             _orderHandler = orderHandler;
             _linearActuator = linearActuator;
+            _automation = automation;
         };
         void ReadLink(){
             if(!_serial)

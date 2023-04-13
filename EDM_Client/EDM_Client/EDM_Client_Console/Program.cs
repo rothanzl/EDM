@@ -24,21 +24,49 @@ edmInterface.GetInfoMessage += message =>
 
 edmInterface.Connect();
 
-
-while (console.ReadLine() is {} command)
+bool runLoop = true;
+while (runLoop && console.ReadKey() is {} command)
 {
     console.WriteLine($"Debug command: {command}");
 
-    if (command.Equals("l"))
+    switch (command.Key)
     {
-        edmInterface.Send(new MoveCommand(10000, MoveCommandDirection.Left));
-    }else if (command.Equals("r"))
-    {
-        edmInterface.Send(new MoveCommand(10000, MoveCommandDirection.Right));
-    }else if (command.Equals("end"))
-    {
-        break;
+        case ConsoleKey.Escape:
+            runLoop = false;
+            break;
+        case ConsoleKey.A:
+            edmInterface.Send(new AutomationCommand(true));
+            break;
+        case ConsoleKey.S:
+            edmInterface.Send(new AutomationCommand(false));
+            break;
+        case ConsoleKey.UpArrow:
+            edmInterface.Send(new MoveCommand(1000, MoveCommandDirection.Up));
+            break;
+        case ConsoleKey.DownArrow:
+            edmInterface.Send(new MoveCommand(1000, MoveCommandDirection.Down));
+            break;
+        case ConsoleKey.D1:
+            edmInterface.Send(new MoveCommand(100, MoveCommandDirection.Down, 20));
+            break;
+        case ConsoleKey.D2:
+            edmInterface.Send(new MoveCommand(100, MoveCommandDirection.Down, 30));
+            break;
+        case ConsoleKey.D3:
+            edmInterface.Send(new MoveCommand(100, MoveCommandDirection.Down, 40));
+            break;
+        case ConsoleKey.D4:
+            edmInterface.Send(new MoveCommand(100, MoveCommandDirection.Down, 50));
+            break;
+        case ConsoleKey.D5:
+            edmInterface.Send(new MoveCommand(100, MoveCommandDirection.Down, 60));
+            break;
+        case ConsoleKey.D6:
+            edmInterface.Send(new MoveCommand(100, MoveCommandDirection.Down, 70));
+            break;
+        
     }
 }
+
 edmInterface.Dispose();
 console.WriteLine("Closed");

@@ -14,4 +14,9 @@ public class ConsoleInterface : IConsoleInterface
     {
         return Console.ReadLine() ?? String.Empty;
     }
+
+    public ConsoleKeyInfo ReadKey()
+    {
+        return Console.ReadKey();
+    }
 }

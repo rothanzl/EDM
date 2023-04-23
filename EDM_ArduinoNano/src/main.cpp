@@ -69,6 +69,7 @@ void loop() {
 void setupPowerSwitch(){
   pinMode(POWER_SWITCH_PIN, OUTPUT);
   TCCR2A = _BV(COM2B1) | _BV(WGM21) | _BV(WGM20);
-  TCCR2B = _BV(CS20) | _BV(CS21) | _BV(CS22);
+  // TCCR2B = _BV(CS20) | _BV(CS21) | _BV(CS22); // 16MHz / 1024
+  TCCR2B = _BV(CS21) | _BV(CS22); // 16MHz / 256
   OCR2B = 55;
 }
